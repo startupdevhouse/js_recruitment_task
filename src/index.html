@@ -34,18 +34,7 @@
               <option value="books">Books</option>
               <option value="business">Business</option>
               <option value="culture">Culture</option>
-              <option value="Sport">Sport</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="column column-20">
-            <label for="activePageSelect">Active Page</label>
-            <select id="activePageSelect">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
+              <option value="sport">Sport</option>
             </select>
           </div>
         </div>
@@ -55,7 +44,7 @@
       <!-- News Section -->
       <section class="container newsContainer">
         <div class="row">
-          <div class="column column-65">
+          <div class="column">
             <h2 class="newsColumnTitle">News List</h2>
 
             <ul class="newsList">
@@ -78,22 +67,51 @@
               </li>
             </ul>
           </div>
-          <div class="column column-55">
+        </div>
+      </section>
+      <!-- ./News Section -->
+
+      <section class="container filtersContainer ">
+        <div class="pageSelect">
+            <label for="activePageSelect">Active Page</label>
+            <select id="activePageSelect">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+      </section>
+
+      <!-- ReadLater Section -->
+      <section class="container newsContainer">
+        <div class="row">
+          <div class="column">
             <h2 class="newsColumnTitle">Read Later</h2>
 
             <ul class="readLaterList">
               <li>
-                <h4 class="readLaterItem-title">Saved news title</h4>
-                <section>
-                  <a href="https://theguardian.com" class="button button-clear">Read</a>
-                  <button class="button button-clear">Remove</button>
-                </section>
+                <article class="news">
+                  <header>
+                    <h3>Sample news title</h3>
+                  </header>
+                  <section class="newsDetails">
+                    <ul>
+                      <li><strong>Section Name:</strong> Sample Section</li>
+                      <li><strong>Publication Date:</strong> 06.12.2018</li>
+                    </ul>
+                  </section>
+                  <section class="newsActions">
+                    <a href="https://theguardian.com" class="button">Read Full</a>
+                    <button class="button button-outline">Remove</button>
+                  </section>
+                </article>
               </li>
             </ul>
           </div>
         </div>
       </section>
-      <!-- ./News Section -->
+      <!-- ./ReadLater Section -->
     </main>
 
     <script src="./main.js"></script>
