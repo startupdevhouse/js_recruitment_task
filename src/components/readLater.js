@@ -118,7 +118,7 @@ const createReadLater = (props = { webTitle: "Sample news title", sectionName: "
     articleSectionActionsReadLater.className = "button button-outline remove-read-later";
     //CREATE READ LATER DELETE EVENT
     articleSectionActionsReadLater.onclick = () => removeReadLater(props.localId);
-    articleSectionActionsReadLater.innerHTML = "Remove";
+    articleSectionActionsReadLater.innerHTML = "Delete";
     articleSectionActions.appendChild(articleSectionActionsReadLater);
 
     article.appendChild(articleSectionActions);
