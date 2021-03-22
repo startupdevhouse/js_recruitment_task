@@ -1,22 +1,29 @@
 import './styles/main.css';
 
-const newsListElement = document.querySelector('.newsList');
-const sectionSelectElement = document.querySelector('#sectionSelect');
-
 // Please use https://open-platform.theguardian.com/documentation/
 
-const loadData = async (section) => {
-    const API_KEY = '7eb760ef-b13f-409e-a7d0-0a7226c8356c';
-    const URL = 'https://content.guardianapis.com';
-    const slug = section ? section : 'search';
+const newsListElement = document.querySelector('.newsList');
+const sectionSelectElement = document.querySelector('#sectionSelect');
+const activePageSelectElement = document.querySelector('#activePageSelect');
 
-    const response = await fetch(`${URL}/${slug}?api-key=${API_KEY}`);
-    const json = await response.json();
-    console.log(json);
+let currSection = 'search';
+let currPage = 1;
 
-    const news = json.response.results
-        .map(
-            ({ webTitle, sectionName, webPublicationDate, webUrl }) => `
+const loadData = async (section, page) => {
+  const API_KEY = '7eb760ef-b13f-409e-a7d0-0a7226c8356c';
+  const URL = 'https://content.guardianapis.com';
+  const slug = section ? section : 'search';
+  const pageNr = page ? page : 1;
+
+  const response = await fetch(
+    `${URL}/${slug}?api-key=${API_KEY}&page=${pageNr}`
+  );
+  const json = await response.json();
+  console.log(json);
+
+  const news = json.response.results
+    .map(
+      ({ webTitle, sectionName, webPublicationDate, webUrl }) => `
                 <li>
                     <article class="news">
                     <header>
@@ -35,16 +42,22 @@ const loadData = async (section) => {
                     </article>
                 </li>
                 `
-        )
-        .join('');
+    )
+    .join('');
 
-    newsListElement.innerHTML = news;
+  newsListElement.innerHTML = news;
 };
 
-loadData();
+loadData(currSection);
 
 sectionSelectElement.addEventListener('change', (e) => {
-    let section = e.target.value.toLowerCase();
-    if (section === 'all') section = 'search';
-    loadData(section);
+  currSection = e.target.value.toLowerCase();
+  if (currSection === 'all') currSection = 'search';
+  loadData(currSection);
+});
+
+activePageSelectElement.addEventListener('change', (e) => {
+  currPage = e.target.value;
+  console.log(currPage);
+  loadData(currSection, currPage);
 });
