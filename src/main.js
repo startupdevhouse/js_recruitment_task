@@ -6,15 +6,27 @@ import './styles/main.css';
 const newsListElement = document.querySelector('.newsList');
 const sectionSelectElement = document.querySelector('#sectionSelect');
 const activePageSelectElement = document.querySelector('#activePageSelect');
+// const readLaterListElement = document.querySelector('.readLaterList');
+// const readLaterButton = document.querySelector('.readLaterButton');
 
 let currSection = 'search';
 let currPage = 1;
+// const readLaterArr = [{}];
 
 const today = new Date(); //today's date
 const startDate = new Date(new Date().setDate(today.getDate() - 30))
   .toISOString()
   .slice(0, 10); //30 days ago
 const endDate = today.toISOString().slice(0, 10);
+
+// const sampleArray = [];
+// sampleArray.push(sampleData, sampleData2);
+
+// const jsonObj = JSON.stringify(sampleArray);
+
+// // localStorage.setItem("NewsArray", jsonObj);
+// let lookUp = localStorage.getItem("NewsArray");
+// console.log(JSON.parse(lookUp));
 
 const loadData = async (section, page) => {
   const API_KEY = '7eb760ef-b13f-409e-a7d0-0a7226c8356c';
@@ -27,11 +39,14 @@ const loadData = async (section, page) => {
   );
   const json = await response.json();
   console.log(json);
+  return json;
+};
 
+const renderContent = (json) => {
   const PageAmount = json.response.pages;
-
+  const pages = [{}];
   const news = json.response.results
-    .map(({ webTitle, sectionName, webPublicationDate, webUrl }) => {
+    ?.map(({ webTitle, sectionName, webPublicationDate, webUrl }) => {
       const date = new Date(webPublicationDate).toLocaleDateString('pl-PL');
       return `
                 <li>
@@ -47,7 +62,7 @@ const loadData = async (section, page) => {
                     </section>
                     <section class="newsActions">
                         <a href="${webUrl}" target="_blank" class="button">Full article</a>
-                        <button class="button button-outline">Read Later</button>
+                        <button class="button button-outline readLaterButton">Read Later</button>
                     </section>
                     </article>
                 </li>
@@ -55,28 +70,31 @@ const loadData = async (section, page) => {
     })
     .join('');
 
-  const pages = [{}];
   for (let i = 1; i <= PageAmount; i++) {
     pages.push(`<option value="${i}">${i}</option>`);
   }
-  console.log(pages);
 
   activePageSelectElement.innerHTML = pages;
   activePageSelectElement.value = currPage;
   newsListElement.innerHTML = news;
 };
 
-loadData(currSection);
+//initial load data
+loadData(currSection).then((data) => renderContent(data));
 
 //event listeners
-sectionSelectElement.addEventListener('change', (e) => {
+sectionSelectElement?.addEventListener('change', (e) => {
   currSection = e.target.value.toLowerCase();
   if (currSection === 'all') currSection = 'search';
   currPage = 1;
-  loadData(currSection, currPage);
+  loadData(currSection, currPage).then((data) => renderContent(data));
 });
 
-activePageSelectElement.addEventListener('change', (e) => {
+activePageSelectElement?.addEventListener('change', (e) => {
   currPage = e.target.value;
-  loadData(currSection, currPage);
+  loadData(currSection, currPage).then((data) => renderContent(data));
 });
+
+// readLaterButton.addEventListener('click', (e) => {
+//     console.log('button clicked');
+// });
