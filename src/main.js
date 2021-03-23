@@ -9,9 +9,10 @@ const activePageSelectElement = document.querySelector('#activePageSelect');
 const readLaterListElement = document.querySelector('.readLaterList');
 const newsContentSearchElement = document.querySelector('#newsContentSearch');
 
-let currSearch = '';
-let currSection = 'search';
-let currPage = 1;
+//values
+let currSearch = newsContentSearchElement.value;
+let currSection = sectionSelectElement.value;
+let currPage = activePageSelectElement.value;
 
 const today = new Date(); //today's date
 const startDate = new Date(new Date().setDate(today.getDate() - 30))
@@ -66,18 +67,20 @@ const removeFromLocalStorage = (e) => {
     readFromLocalStorage();
 };
 
-const loadData = async (section, page, search) => {
+const loadData = async () => {
     const API_KEY = '7eb760ef-b13f-409e-a7d0-0a7226c8356c';
     const URL = 'https://content.guardianapis.com';
-    const slug = section ? section : 'all';
-    const pageNr = page ? page : 1;
-    const q = search ? search : '';
+    const params = {
+        q: currSearch ? currSearch : '',
+        page: currPage ? currPage : 1,
+        'from-date': startDate,
+        'to-date': endDate,
+        'api-key': API_KEY,
+    };
 
-    //TODO refactor to not add section if section is all
+    if (currSection !== 'all') params['section'] = currSection;
 
-    const response = await fetch(
-        `${URL}/search?api-key=${API_KEY}&page=${pageNr}&from-date=${startDate}&to-date=${endDate}&q=${q}&section=${slug}`
-    );
+    const response = await fetch(URL + '/search?' + new URLSearchParams(params));
     const json = await response.json();
     console.log(json);
     return json;
@@ -85,7 +88,7 @@ const loadData = async (section, page, search) => {
 
 const renderContent = (json) => {
     const pages = [{}];
-    const PageAmount = json.response.pages;
+    const pageAmount = json.response.pages;
     const items = json.response.results;
 
     const news = items
@@ -114,7 +117,7 @@ const renderContent = (json) => {
         .join('');
 
     //render active page list
-    for (let i = 1; i <= PageAmount; i++) {
+    for (let i = 1; i <= pageAmount; i++) {
         pages.push(`<option value="${i}">${i}</option>`);
     }
 
@@ -137,7 +140,6 @@ readFromLocalStorage();
 //event listeners
 sectionSelectElement?.addEventListener('change', (e) => {
     currSection = e.target.value.toLowerCase();
-    if (currSection === 'all') currSection = 'search';
     currPage = 1;
     console.log(currSearch);
     loadData(currSection, currPage, currSearch).then((data) =>
