@@ -7,9 +7,32 @@ We would like you to create an application that will display list of news fetche
 Goal of this task is to check your JavaScript knowledge so please don't use any additional libraries. There are some exceptions, though. You can use `fetch` for http requests and if you are going to write some tests, you can of course use tools like `testing-library` or `jest`.
 
 **Important**
-* Please treat this tasks as something that would be shown to our customer, so focus on quality and best practices (and we don't mean only from the code point of view :) ).
-* Also feel free to update or customize starter config. For example you can change `prettier` or `eslint` config or add something else that you are used to use on daily basis.
-* We have provided sample html + css styling, so you can focus on writing JS code but you can change default layout if you want.
+
+- Please treat this tasks as something that would be shown to our customer, so focus on quality and best practices (and we don't mean only from the code point of view :) ).
+- Also feel free to update or customize starter config. For example you can change `prettier` or `eslint` config or add something else that you are used to use on daily basis.
+- We have provided sample html + css styling, so you can focus on writing JS code but you can change default layout if you want.
+
+## (Bonus) My approach to solving this task.
+
+1. Get know the guardian API
+2. Created account & get the API key
+3. Created a function to fetch data from API using fetch
+4. Specify the section parameter and put it as function argument
+5. Added listener for section drop-down
+6. Specify current page parameter and put it as function argument
+7. Added listener for active page drop-down
+8. Fix date formating, it was ISO format when comes from API
+9. Create today date and the date 30 days ago
+10. Use the created dates as fetch parameters to limit the request
+11. Fix for active page rendering based on api data
+12. Created sample data and tried to save it on localstorage as array of objets and then get the data from localStorage
+13. At this point I realized I need to split my part of my loadData function into another function to make it more clean
+14. After a while i get localStorage working as expected
+15. Added content search functionality
+16. Added some placeholder for Read Later list to inform user how to add news to their list
+17. I've added some basic error handling to inform user that news cannot be loaded
+18. Now since i have all functionality working i can refactor my code to make it more efficient and clean
+19. Added some small styling changes
 
 ## Requirements
 
