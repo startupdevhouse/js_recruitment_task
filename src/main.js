@@ -10,55 +10,36 @@ const readLaterListElement = document.querySelector('.readLaterList');
 const newsContentSearchElement = document.querySelector('#newsContentSearch');
 const errorElement = document.querySelector('.error');
 
-//values
-let currSearch = newsContentSearchElement.value;
-let currSection = sectionSelectElement.value;
-let currPage = activePageSelectElement.value;
+//current values
+let currSearch = newsContentSearchElement?.value;
+let currSection = sectionSelectElement?.value;
+let currPage = activePageSelectElement?.value;
 
-const saveToLocalStorage = (e, items) => {
-  const { id, webTitle, webUrl } = items[e.target.dataset.index];
-  const item = { id, webTitle, webUrl, added: Date.now() };
-  const obj = JSON.stringify(item);
-  localStorage.setItem(id, obj);
-  readFromLocalStorage();
-};
+window.onload = () => {
+  getData().then((data) => renderNewsList(data));
+  renderReadLaterList(readFromLocalStorage());
 
-const readFromLocalStorage = () => {
-  const values = [];
-  const keys = Object.keys(localStorage);
-  let i = keys.length;
-  while (i--) values.push(JSON.parse(localStorage.getItem(keys[i])));
+  //event listeners
+  sectionSelectElement?.addEventListener('change', (e) => {
+    currSection = e.target.value.toLowerCase();
+    currPage = 1;
+    getData().then((data) => renderNewsList(data));
+  });
 
-  const render = values
-    ?.sort((a, b) => b.added - a.added)
-    ?.map(
-      ({ id, webTitle, webUrl }) => `
-            <li class="readLaterItem>
-                <h4 class="readLaterItem-title">${webTitle}</h4>
-                <section>
-                <a href="${webUrl}" target="_blank" class="button button-clear">Read</a>
-                <button class="button button-clear remove-button" data-id="${id}">Remove</button>
-                </section>
-            </li> `
-    )
-    .join('');
+  activePageSelectElement?.addEventListener('change', (e) => {
+    currPage = e.target.value;
+    getData().then((data) => renderNewsList(data));
+  });
 
-  if (!render) {
-    readLaterListElement.innerHTML =
-      '<div><p>Nothing on your list yet... <br> Click "Read Later" to add items to your list</div>';
-  } else {
-    readLaterListElement.innerHTML = render;
-  }
-  const removeButtons = document.querySelectorAll('.remove-button');
-  removeButtons.forEach((button) =>
-    button.addEventListener('click', (e) => removeFromLocalStorage(e))
-  );
-};
-
-const removeFromLocalStorage = (e) => {
-  const { id } = e.target.dataset;
-  localStorage.removeItem(id);
-  readFromLocalStorage();
+  newsContentSearchElement?.addEventListener('input', (e) => {
+    let timeout = null;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      currSearch = e.target.value;
+      currPage = 1;
+      getData().then((data) => renderNewsList(data));
+    }, 1000);
+  });
 };
 
 const getData = async () => {
@@ -84,7 +65,7 @@ const getData = async () => {
   return json;
 };
 
-const renderContent = (json) => {
+const renderNewsList = (json) => {
   const pagesArr = [];
   const { pages } = json.response;
   const { results } = json.response;
@@ -131,31 +112,51 @@ const renderContent = (json) => {
   );
 };
 
-const onLoad = () => {
-  getData().then((data) => renderContent(data));
-  readFromLocalStorage();
-
-  //event listeners
-  sectionSelectElement?.addEventListener('change', (e) => {
-    currSection = e.target.value.toLowerCase();
-    currPage = 1;
-    getData().then((data) => renderContent(data));
-  });
-
-  activePageSelectElement?.addEventListener('change', (e) => {
-    currPage = e.target.value;
-    getData().then((data) => renderContent(data));
-  });
-
-  newsContentSearchElement?.addEventListener('input', (e) => {
-    let timeout = null;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      currSearch = e.target.value;
-      currPage = 1;
-      getData().then((data) => renderContent(data));
-    }, 1000);
-  });
+const saveToLocalStorage = (e, items) => {
+  const { id, webTitle, webUrl } = items[e.target.dataset.index];
+  const item = { id, webTitle, webUrl, added: Date.now() };
+  const obj = JSON.stringify(item);
+  localStorage.setItem(id, obj);
+  renderReadLaterList(readFromLocalStorage());
 };
 
-onLoad();
+const readFromLocalStorage = () => {
+  const values = [];
+  const keys = Object.keys(localStorage);
+  let i = keys.length;
+  while (i--) values.push(JSON.parse(localStorage.getItem(keys[i])));
+  return values;
+};
+
+const removeFromLocalStorage = (e) => {
+  const { id } = e.target.dataset;
+  localStorage.removeItem(id);
+  renderReadLaterList(readFromLocalStorage());
+};
+
+const renderReadLaterList = (values) => {
+  const render = values
+    ?.sort((a, b) => b.added - a.added)
+    ?.map(
+      ({ id, webTitle, webUrl }) => `
+            <li class="readLaterItem>
+                <h4 class="readLaterItem-title">${webTitle}</h4>
+                <section>
+                <a href="${webUrl}" target="_blank" class="button button-clear">Read</a>
+                <button class="button button-clear remove-button" data-id="${id}">Remove</button>
+                </section>
+            </li> `
+    )
+    .join('');
+
+  if (!render) {
+    readLaterListElement.innerHTML =
+      '<div><p>Nothing on your list yet... <br> Click "Read Later" to add items to your list</div>';
+  } else {
+    readLaterListElement.innerHTML = render;
+  }
+  const removeButtons = document.querySelectorAll('.remove-button');
+  removeButtons.forEach((button) =>
+    button.addEventListener('click', (e) => removeFromLocalStorage(e))
+  );
+};
