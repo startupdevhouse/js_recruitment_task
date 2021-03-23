@@ -24,10 +24,11 @@ const saveToLocalStorage = (e, items) => {
 };
 
 const readFromLocalStorage = () => {
-  let values = [],
-    keys = Object.keys(localStorage),
-    i = keys.length;
+  const values = [];
+  const keys = Object.keys(localStorage);
+  let i = keys.length;
   while (i--) values.push(JSON.parse(localStorage.getItem(keys[i])));
+
   const render = values
     ?.sort((a, b) => b.added - a.added)
     ?.map(
@@ -60,7 +61,7 @@ const removeFromLocalStorage = (e) => {
   readFromLocalStorage();
 };
 
-const loadData = async () => {
+const getData = async () => {
   const API_KEY = '7eb760ef-b13f-409e-a7d0-0a7226c8356c';
   const URL = 'https://content.guardianapis.com';
   const startDate = new Date(new Date().setDate(new Date().getDate() - 30));
@@ -80,7 +81,6 @@ const loadData = async () => {
       'Oops, we cannot get the latest news, please try again';
   });
   const json = await resp.json();
-  console.log(json);
   return json;
 };
 
@@ -124,27 +124,27 @@ const renderContent = (json) => {
   activePageSelectElement.value = currPage;
   newsListElement.innerHTML = news;
 
-  //add functions to read later buttons
+  //add functions to read-later buttons
   const saveButtons = document.querySelectorAll('.save-button');
-  saveButtons.forEach((button) =>
+  saveButtons?.forEach((button) =>
     button.addEventListener('click', (e) => saveToLocalStorage(e, results))
   );
 };
 
-const pageLoad = () => {
-  loadData().then((data) => renderContent(data));
+const onLoad = () => {
+  getData().then((data) => renderContent(data));
   readFromLocalStorage();
 
   //event listeners
   sectionSelectElement?.addEventListener('change', (e) => {
     currSection = e.target.value.toLowerCase();
     currPage = 1;
-    loadData().then((data) => renderContent(data));
+    getData().then((data) => renderContent(data));
   });
 
   activePageSelectElement?.addEventListener('change', (e) => {
     currPage = e.target.value;
-    loadData().then((data) => renderContent(data));
+    getData().then((data) => renderContent(data));
   });
 
   newsContentSearchElement?.addEventListener('input', (e) => {
@@ -153,11 +153,9 @@ const pageLoad = () => {
     timeout = setTimeout(() => {
       currSearch = e.target.value;
       currPage = 1;
-      loadData().then((data) => renderContent(data));
+      getData().then((data) => renderContent(data));
     }, 1000);
   });
 };
 
-//initial load data
-
-pageLoad();
+onLoad();
