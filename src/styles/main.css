@@ -3,6 +3,7 @@
   background-color: #f4f5f6;
   padding: 20px;
   box-shadow: 3px 0 6px 0 #c9ced5;
+  margin-bottom: 20px;
 }
 
 .appHeader-inner {
@@ -53,6 +54,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.readLaterList {
+  margin-top: 40px;
+}
+
+.readLaterList > li {
+  list-style-type: none;
+  border: 1px solid rgba(88, 88, 88, 0.41);
+  border-radius: 6px;
+  box-shadow: -1px 1px 1px 0.2px rgba(0, 0, 0, 0.2);
+  padding: 12px 12px 0 12px;
 }
 
 .readLaterItem-title {
