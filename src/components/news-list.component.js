@@ -1,8 +1,11 @@
+const TEMPLATE_ID = 'news-list-template';
+const CUSTOM_ELEMENT_NAME = 'news-list';
+
 class NewsList extends HTMLElement {
     constructor() {
         super();
 
-        const template = document.getElementById('news-list-template');
+        const template = document.getElementById(TEMPLATE_ID);
 
         this.shadow = this.attachShadow({ mode: 'open' });
         this.shadow.appendChild(template.content.cloneNode(true));
@@ -50,4 +53,4 @@ class NewsList extends HTMLElement {
     }
 }
 
-window.customElements.define('news-list', NewsList);
+window.customElements.define(CUSTOM_ELEMENT_NAME, NewsList);

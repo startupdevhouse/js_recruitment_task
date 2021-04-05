@@ -5,12 +5,20 @@ import { getStringDate30DaysAgo } from './utils.service';
 const logError = logger('API');
 
 export default {
-    getLatestNews: async (page) => {
+    getLatestNews: async (page, section, phase) => {
         try {
             const fromDate = getStringDate30DaysAgo();
-            const response = await fetch(
-                `${API.BASE_URL}?from-date=${fromDate}&page=${page}&api-key=${API.API_KEY}`
-            );
+            let url = `${API.BASE_URL}?from-date=${fromDate}&api-key=${API.API_KEY}`;
+            if (page) {
+                url += `&page=${page}`;
+            }
+            if (section) {
+                url += `&section=${section}`;
+            }
+            if (phase) {
+                url += `&q="${phase}"`;
+            }
+            const response = await fetch(url);
             return await response.json();
         } catch (e) {
             logError(e);

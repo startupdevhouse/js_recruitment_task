@@ -22,23 +22,16 @@
     </header>
 
     <!-- Filters Section -->
-    <section class="container filtersContainer">
-      <div class="row">
-        <div class="column searchColumn">
-          <label for="newsContentSearch">News content search</label>
-          <input type="search" placeholder="News content search" id="newsContentSearch" />
+    <section class="container">
+      <div class="row filtersContainer">
+        <div class="column">
+          <filter-search/>
         </div>
         <div class="column">
-          <label for="sectionSelect">Section</label>
-          <select id="sectionSelect">
-            <option value="all">All</option>
-            <option value="books">Books</option>
-            <option value="business">Business</option>
-            <option value="culture">Culture</option>
-            <option value="Sport">Sport</option>
-          </select>
+          <filter-section/>
         </div>
       </div>
+
       <div class="row">
         <div class="column column-20">
           <page-select />
@@ -182,6 +175,50 @@
     <select id="activePageSelect">
       <option value="1">1</option>
     </select>
+  </template>
+
+  <template id="filter-section-template">
+    <style>
+      label {
+        font-size: 13px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+        margin-right: 5px;
+      }
+
+      select {
+        padding: 5px;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+      }
+    </style>
+    <label for="sectionSelect">Section</label>
+    <select id="sectionSelect">
+      <option value="all">All</option>
+      <option value="books">Books</option>
+      <option value="business">Business</option>
+      <option value="culture">Culture</option>
+      <option value="sport">Sport</option>
+    </select>
+  </template>
+
+  <template id="filter-search-template">
+    <style>
+      label {
+        font-size: 13px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+        margin-right: 5px;
+      }
+
+      input {
+        padding: 6px 10px;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+      }
+    </style>
+    <label for="newsContentSearch">News content search</label>
+    <input type="search" placeholder="News content search" id="newsContentSearch" />
   </template>
   <!-- ./TEMPLATES -->
 

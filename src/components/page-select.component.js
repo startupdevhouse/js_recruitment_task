@@ -1,8 +1,14 @@
-class ActivePageSelect extends HTMLElement {
+import EVENTS from '../constants/events.json';
+
+const TEMPLATE_ID = 'page-select-template';
+const SELECT_ID = 'activePageSelect';
+const CUSTOM_ELEMENT_NAME = 'page-select';
+
+class PageSelect extends HTMLElement {
     constructor() {
         super();
 
-        const template = document.getElementById('page-select-template');
+        const template = document.getElementById(TEMPLATE_ID);
         this.shadow = this.attachShadow({ mode: 'open' });
         this.shadow.appendChild(template.content.cloneNode(true));
     }
@@ -18,17 +24,17 @@ class ActivePageSelect extends HTMLElement {
     }
 
     connectedCallback() {
-        const selectElement = this.shadow.getElementById('activePageSelect');
+        const selectElement = this.shadow.getElementById(SELECT_ID);
         selectElement.addEventListener('change', this.onSelect);
     }
 
     disconnectedCallback() {
-        const selectElement = this.shadow.getElementById('activePageSelect');
+        const selectElement = this.shadow.getElementById(SELECT_ID);
         selectElement.removeEventListener('change', this.onSelect);
     }
 
     onSelect(event) {
-        const e = new CustomEvent('fetch-news', {
+        const e = new CustomEvent(EVENTS.FETCH_NEWS, {
             bubbles: true,
             composed: true,
             detail: {
@@ -49,11 +55,11 @@ class ActivePageSelect extends HTMLElement {
                 optionNode.innerText = i;
                 options.push(optionNode);
             }
-            const selectNode = this.shadow.getElementById('activePageSelect');
+            const selectNode = this.shadow.getElementById(SELECT_ID);
             selectNode.innerHTML = '';
             selectNode.append(...options);
         }
     }
 }
 
-window.customElements.define('page-select', ActivePageSelect);
+window.customElements.define(CUSTOM_ELEMENT_NAME, PageSelect);
