@@ -1,101 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic" />
-    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css" />
-    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <title>Startup House recruitment task</title>
-  </head>
-  <body>
-    <main class="wrapper">
-      <header class="appHeader">
-        <div class="container appHeader-inner">
-          <img src="./assets/logo.png" alt="company logo" class="companyLogo" />
-          <h1 class="appTitle">Recruitment task</h1>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic" />
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css" />
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css" />
+
+  <title>Startup House recruitment task</title>
+</head>
+
+<body>
+  <main class="wrapper">
+    <header class="appHeader">
+      <div class="container appHeader-inner">
+        <img src="./assets/logo.png" alt="company logo" class="companyLogo" />
+        <h1 class="appTitle">Recruitment task</h1>
+      </div>
+    </header>
+
+    <!-- Filters Section -->
+    <section class="container filtersContainer">
+      <div class="row">
+        <div class="column searchColumn">
+          <label for="newsContentSearch">News content search</label>
+          <input type="search" placeholder="News content search" id="newsContentSearch" />
         </div>
+        <div class="column">
+          <label for="sectionSelect">Section</label>
+          <select id="sectionSelect">
+            <option value="all">All</option>
+            <option value="books">Books</option>
+            <option value="business">Business</option>
+            <option value="culture">Culture</option>
+            <option value="Sport">Sport</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column column-20">
+          <label for="activePageSelect">Active Page</label>
+          <select id="activePageSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+      </div>
+    </section>
+    <!-- ./Filters Section -->
+
+    <!-- News Section -->
+    <section class="container newsContainer">
+      <div class="row">
+        <div class="column column-65">
+          <news-list>
+            <span slot="title">News List</span>
+          </news-list>
+        </div>
+        <div class="column column-55">
+          <h2 class="newsColumnTitle">Read Later</h2>
+
+          <ul class="readLaterList">
+            <li>
+              <h4 class="readLaterItem-title">Saved news title</h4>
+              <section>
+                <a href="https://theguardian.com" class="button button-clear">Read</a>
+                <button class="button button-clear">Remove</button>
+              </section>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- ./News Section -->
+  </main>
+
+  <!-- TEMPLATES (TODO: Config webpack html loader and put templates in components folder) -->
+  <template id="news-block-template">
+    <style>
+      article {
+        padding: 15px;
+        border: 1px solid #f1f1f1;
+        margin-bottom: 10px;
+        border-radius: 10px;
+      }
+
+      h3 {
+        color: #2a2a2a;
+        margin-top: 0;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        font-size: 13px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+      }
+
+      ::slotted([slot=button]) {
+        background: #1d1d1d;
+        color: #fff;
+        text-decoration: none;
+        padding: 15px 20px;
+        border-radius: 26px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid #1d1d1d;
+      }
+
+      button {
+        background: #ffffff;
+        color: #9e9e9e;
+        text-decoration: none;
+        padding: 15px 20px;
+        border-radius: 26px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid #dcdcdc;
+        cursor: pointer;
+      }
+    </style>
+    <article>
+      <header>
+        <h3>
+          <slot name="title"></slot>
+        </h3>
       </header>
-
-      <!-- Filters Section -->
-      <section class="container filtersContainer">
-        <div class="row">
-          <div class="column searchColumn">
-            <label for="newsContentSearch">News content search</label>
-            <input type="search" placeholder="News content search" id="newsContentSearch" />
-          </div>
-          <div class="column">
-            <label for="sectionSelect">Section</label>
-            <select id="sectionSelect">
-              <option value="all">All</option>
-              <option value="books">Books</option>
-              <option value="business">Business</option>
-              <option value="culture">Culture</option>
-              <option value="Sport">Sport</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="column column-20">
-            <label for="activePageSelect">Active Page</label>
-            <select id="activePageSelect">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-        </div>
+      <section>
+        <ul>
+          <li>Section Name: <strong>
+              <slot name="section-name"></slot>
+            </strong>
+          </li>
+          <li>Publication Date: <strong>
+              <slot name="date"></slot>
+            </strong>
+          </li>
+        </ul>
       </section>
-      <!-- ./Filters Section -->
-
-      <!-- News Section -->
-      <section class="container newsContainer">
-        <div class="row">
-          <div class="column column-65">
-            <h2 class="newsColumnTitle">News List</h2>
-
-            <ul class="newsList">
-              <li>
-                <article class="news">
-                  <header>
-                    <h3>Sample news title</h3>
-                  </header>
-                  <section class="newsDetails">
-                    <ul>
-                      <li><strong>Section Name:</strong> Sample Section</li>
-                      <li><strong>Publication Date:</strong> 06.12.2018</li>
-                    </ul>
-                  </section>
-                  <section class="newsActions">
-                    <a href="https://theguardian.com" class="button">Full article</a>
-                    <button class="button button-outline">Read Later</button>
-                  </section>
-                </article>
-              </li>
-            </ul>
-          </div>
-          <div class="column column-55">
-            <h2 class="newsColumnTitle">Read Later</h2>
-
-            <ul class="readLaterList">
-              <li>
-                <h4 class="readLaterItem-title">Saved news title</h4>
-                <section>
-                  <a href="https://theguardian.com" class="button button-clear">Read</a>
-                  <button class="button button-clear">Remove</button>
-                </section>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <section>
+        <slot name="button"></slot>
+        <button>Read Later</button>
       </section>
-      <!-- ./News Section -->
-    </main>
+    </article>
+  </template>
 
-    <script src="./main.js"></script>
-  </body>
+  <template id="news-list-template">
+    <style>
+      h2 {
+        font-weight: 200;
+        color: #1d1d1d;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <h2>
+      <slot name="title"></slot>
+    </h2>
+  </template>
+  <!-- ./TEMPLATES -->
+
+  <script src="./main.js"></script>
+</body>
+
 </html>
