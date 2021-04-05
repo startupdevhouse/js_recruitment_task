@@ -5,7 +5,7 @@ import { getStringDate30DaysAgo } from './utils.service';
 const logError = logger('API');
 
 export default {
-    getLatestNews: async (page = 1) => {
+    getLatestNews: async (page) => {
         try {
             const fromDate = getStringDate30DaysAgo();
             const response = await fetch(

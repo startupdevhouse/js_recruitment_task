@@ -5,7 +5,6 @@ class NewsList extends HTMLElement {
         const template = document.getElementById('news-list-template');
 
         this.shadow = this.attachShadow({ mode: 'open' });
-
         this.shadow.appendChild(template.content.cloneNode(true));
 
         this._items = [];
@@ -33,7 +32,7 @@ class NewsList extends HTMLElement {
     }
 
     render() {
-        const ulNode = document.createElement('ul');
+        const ulNode = this.shadow.querySelector('ul');
         const nodes = [];
 
         for (let item of this._items) {
@@ -46,8 +45,8 @@ class NewsList extends HTMLElement {
             </news-block>`;
             nodes.push(liNode);
         }
+        ulNode.innerHTML = '';
         ulNode.append(...nodes);
-        this.shadow.append(ulNode);
     }
 }
 

@@ -17,8 +17,7 @@
   <main class="wrapper">
     <header class="appHeader">
       <div class="container appHeader-inner">
-        <img src="./assets/logo.png" alt="company logo" class="companyLogo" />
-        <h1 class="appTitle">Recruitment task</h1>
+        <img src="./assets/logo.png" alt="Startup House" class="companyLogo" />
       </div>
     </header>
 
@@ -42,13 +41,7 @@
       </div>
       <div class="row">
         <div class="column column-20">
-          <label for="activePageSelect">Active Page</label>
-          <select id="activePageSelect">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
+          <page-select />
         </div>
       </div>
     </section>
@@ -167,6 +160,28 @@
     <h2>
       <slot name="title"></slot>
     </h2>
+    <ul></ul>
+  </template>
+
+  <template id="page-select-template">
+    <style>
+      label {
+        font-size: 13px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+        margin-right: 5px;
+      }
+
+      select {
+        padding: 5px;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+      }
+    </style>
+    <label for="activePageSelect">Active Page</label>
+    <select id="activePageSelect">
+      <option value="1">1</option>
+    </select>
   </template>
   <!-- ./TEMPLATES -->
 
