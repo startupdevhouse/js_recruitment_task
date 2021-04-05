@@ -9,7 +9,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "parcel serve src/index.html",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "format": "prettier  --write \"**/*.{js,json,css}\""
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
