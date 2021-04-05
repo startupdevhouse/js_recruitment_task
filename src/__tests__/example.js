@@ -22,8 +22,8 @@ function getExampleDOM() {
     const button = div.querySelector('button');
     const input = div.querySelector('input');
     button.addEventListener('click', () => {
-    // let's pretend this is making a server request, so it's async
-    // (you'd want to mock this imaginary request in your unit tests)...
+        // let's pretend this is making a server request, so it's async
+        // (you'd want to mock this imaginary request in your unit tests)...
         setTimeout(() => {
             const printedUsernameContainer = document.createElement('div');
             printedUsernameContainer.innerHTML = `
