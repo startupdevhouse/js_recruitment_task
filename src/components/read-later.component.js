@@ -1,9 +1,9 @@
 import EVENTS from '../constants/events.json';
 
-const TEMPLATE_ID = 'news-list-template';
-const CUSTOM_ELEMENT_NAME = 'news-list';
+const TEMPLATE_ID = 'read-later-template';
+const CUSTOM_ELEMENT_NAME = 'read-later-list';
 
-class NewsList extends HTMLElement {
+class ReadLaterList extends HTMLElement {
     constructor() {
         super();
 
@@ -12,7 +12,7 @@ class NewsList extends HTMLElement {
         this.shadow = this.attachShadow({ mode: 'open' });
         this.shadow.appendChild(template.content.cloneNode(true));
 
-        this._items = [];
+        this._savedNews = [];
     }
 
     static get observedAttributes() {
@@ -25,15 +25,15 @@ class NewsList extends HTMLElement {
         }
     }
 
-    set items(value) {
+    set savedNews(value) {
         if (Array.isArray(value)) {
-            this._items = value;
+            this._savedNews = value;
             this.setAttribute('data-key', Date.now());
         }
     }
 
-    get items() {
-        return this._items;
+    get savedNews() {
+        return this._savedNews;
     }
 
     connectedCallback() {
@@ -48,15 +48,13 @@ class NewsList extends HTMLElement {
 
     onClick(e) {
         if (e.target.tagName === 'BUTTON') {
-            const { url, id, title } = e.target.dataset;
+            const { id } = e.target.dataset;
             const event = new CustomEvent(EVENTS.READ_LATER, {
                 bubbles: true,
                 composed: true,
                 detail: {
-                    action: 'add',
+                    action: 'remove',
                     id,
-                    url,
-                    title,
                 },
             });
 
@@ -68,26 +66,23 @@ class NewsList extends HTMLElement {
         const ulNode = this.shadow.querySelector('ul');
         const nodes = [];
 
-        for (let item of this._items) {
+        for (let item of this._savedNews) {
             const liNode = document.createElement('li');
-            liNode.innerHTML = `<news-block data-id="${item.id}">
-            <span slot="title">${item.webTitle}</span>
-            <span slot="section-name">${item.sectionName}</span>
-            <span slot="date">${item.webPublicationDate}</span>
-            <a slot="button" href="${item.webUrl}" target="_blank">Full article</a>
-            <button slot="readLater"
-                data-id="${item.id}"
-                data-title="${item.webTitle}"
-                data-url="${item.webUrl}"
-            >
-                Read Later
-            </button>
-            </news-block>`;
+            liNode.innerHTML = `<h4>${item.title}</h4>
+            <section>
+              <a href="${item.url}" target="_blank">Read</a>
+              <button data-id="${item.id}">Remove</button>
+            </section>`;
             nodes.push(liNode);
         }
-        ulNode.innerHTML = '';
-        ulNode.append(...nodes);
+
+        if (nodes.length > 0) {
+            ulNode.innerHTML = '';
+            ulNode.append(...nodes);
+        } else {
+            ulNode.innerHTML = '<div>List is empty</div>';
+        }
     }
 }
 
-window.customElements.define(CUSTOM_ELEMENT_NAME, NewsList);
+window.customElements.define(CUSTOM_ELEMENT_NAME, ReadLaterList);

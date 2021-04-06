@@ -1,3 +1,4 @@
 {
-    "FETCH_NEWS": "fetch-news"
+    "FETCH_NEWS": "fetch-news",
+    "READ_LATER": "read-later"
 }

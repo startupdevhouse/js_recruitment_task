@@ -6,9 +6,8 @@ class NewsBlock extends HTMLElement {
         super();
 
         const template = document.getElementById(TEMPLATE_ID);
-        this.attachShadow({ mode: 'open' }).appendChild(
-            template.content.cloneNode(true)
-        );
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.shadow.appendChild(template.content.cloneNode(true));
     }
 }
 
