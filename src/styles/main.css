@@ -24,25 +24,6 @@
     padding-top: 80px;
 }
 
-.newsColumnTitle {
-    border-bottom: 1px solid;
-    max-width: 240px;
-    padding-bottom: 5px;
-}
-
-.news {
-    border: 1px solid rgba(88, 88, 88, 0.41);
-    max-width: 400px;
-    padding: 20px;
-    border-radius: 6px;
-    box-shadow: -1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.readLaterItem-title {
-    display: inline-block;
-    margin-bottom: 5px;
-}
-
 /* Larger than mobile screen */
 @media (min-width: 40rem) {
     .appTitle {

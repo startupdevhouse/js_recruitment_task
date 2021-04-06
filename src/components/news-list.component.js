@@ -85,8 +85,12 @@ class NewsList extends HTMLElement {
             </news-block>`;
             nodes.push(liNode);
         }
-        ulNode.innerHTML = '';
-        ulNode.append(...nodes);
+        if (nodes.length > 0) {
+            ulNode.innerHTML = '';
+            ulNode.append(...nodes);
+        } else {
+            ulNode.innerHTML = '<div>No results</div>';
+        }
     }
 }
 
